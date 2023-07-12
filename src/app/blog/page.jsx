@@ -4,9 +4,7 @@ import Image from 'next/image'
 import Styles from './page.module.css'
 
 async function getData() {
-    const res = await fetch(`${process.env.SITE_URL}/api/posts`, {
-        cache: "no-store",
-    });
+    const res = await fetch(`${process.env.SITE_URL}/api/posts`, { next: { revalidate: 10 } });
 
     if (!res.ok) {
         throw new Error("Failed to fetch data");
@@ -23,8 +21,8 @@ export const metadata = {
 const Blog = async () => {
     const data = await getData();
     return (
-        <div className={Styles.maincontainer}>
-            {data.map((item) => (
+        <div className={Styles.maincontainer} >
+            {data?.map((item) => (
                 <Link href={`/blog/${item._id}`} className={Styles.container} key={item._id}>
                     <div className={Styles.imgContainer}>
                         <Image
@@ -41,7 +39,7 @@ const Blog = async () => {
                     </div>
                 </Link>
             ))}
-        </div>
+        </div >
     )
 }
 

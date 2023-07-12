@@ -3,9 +3,7 @@ import Styles from './page.module.css'
 import Image from 'next/image'
 
 async function getData(id) {
-    const res = await fetch(`${process.env.SITE_URL}/api/posts/${id}`, {
-        cache: "no-store",
-    });
+    const res = await fetch(`${process.env.SITE_URL}/api/posts/${id}`, { next: { revalidate: 10 } });
 
     if (!res.ok) {
         return notFound()
@@ -29,25 +27,25 @@ const BlogPost = async ({ params }) => {
             <div className={Styles.top}>
                 <div className={Styles.info}>
                     <h1 className={Styles.title}>
-                        {data.title}
+                        {data?.title}
                     </h1>
                     <p className={Styles.desc}>
-                        {data.desc}
+                        {data?.desc}
                     </p>
                     <div className={Styles.author}>
                         <Image
-                            src={data.img}
+                            src={data?.img}
                             alt=''
                             width={40}
                             height={40}
                             className={Styles.avatar}
                         />
-                        <span className={Styles.username}>{data.username}</span>
+                        <span className={Styles.username}>{data?.username}</span>
                     </div>
                 </div>
                 <div className={Styles.imageContainer}>
                     <Image
-                        src={data.img}
+                        src={data?.img}
                         alt=''
                         fill={true}
                         className={Styles.image}
@@ -56,7 +54,7 @@ const BlogPost = async ({ params }) => {
             </div>
             <div className={Styles.content}>
                 <p className={Styles.text}>
-                    {data.content}
+                    {data?.content}
                 </p>
             </div>
         </div>
