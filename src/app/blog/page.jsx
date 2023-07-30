@@ -6,11 +6,6 @@ import Image from 'next/image'
 import Styles from './page.module.css'
 import useSWR from 'swr';
 
-export const metadata = {
-    title: 'Blog Page',
-    description: 'This is a next js blog page.',
-}
-
 const Blog = () => {
 
     const fetcher = (...args) => fetch(...args).then((res) => res.json());
