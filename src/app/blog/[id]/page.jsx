@@ -1,27 +1,22 @@
+"use client"
+
 import React from 'react'
 import Styles from './page.module.css'
 import Image from 'next/image'
+import useSWR from 'swr';
 
-async function getData(id) {
-    const res = await fetch(`${process.env.SITE_URL}/api/posts/${id}`, { next: { revalidate: 10 } });
 
-    if (!res.ok) {
-        return notFound()
-    }
+const BlogPost = ({ params }) => {
 
-    return await res.json();
-}
+    const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export async function generateMetadata({ params }) {
-    const post = await getData(params.id);
-    return {
-        title: post.title,
-        description: post.desc,
+    const { data, mutate, error, isLoading } = useSWR(`/api/posts/${params.id}`, fetcher);
+
+    const metadata = {
+        title: data?.title,
+        description: data?.desc,
     };
-}
 
-const BlogPost = async ({ params }) => {
-    const data = await getData(params.id);
     return (
         <div className={Styles.container}>
             <div className={Styles.top}>
